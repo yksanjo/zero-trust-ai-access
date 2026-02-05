@@ -1,0 +1,27 @@
+apiVersion: v2
+name: zero-trust-ai-access
+description: Zero-Trust Access Layer for AI Models - Okta for AI APIs
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+keywords:
+  - ai
+  - gateway
+  - security
+  - zero-trust
+  - fastapi
+home: https://github.com/yourorg/zero-trust-ai-access
+sources:
+  - https://github.com/yourorg/zero-trust-ai-access
+maintainers:
+  - name: Zero Trust AI Team
+    email: team@example.com
+dependencies:
+  - name: postgresql
+    version: 13.2.0
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
+  - name: redis
+    version: 18.5.0
+    repository: https://charts.bitnami.com/bitnami
+    condition: redis.enabled

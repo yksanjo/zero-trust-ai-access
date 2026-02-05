@@ -1,0 +1,190 @@
+# Zero-Trust AI Access Gateway Helm Chart Values
+
+# Number of gateway replicas
+replicaCount: 3
+
+image:
+  repository: zero-trust-ai-access
+  pullPolicy: IfNotPresent
+  tag: "0.1.0"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "8000"
+  prometheus.io/path: "/metrics"
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8000
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/rate-limit-window: "1m"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    - host: ai-gateway.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: ai-gateway-tls
+      hosts:
+        - ai-gateway.example.com
+
+resources:
+  limits:
+    cpu: 2000m
+    memory: 2Gi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 20
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - zero-trust-ai-access
+          topologyKey: kubernetes.io/hostname
+
+# Application Configuration
+config:
+  app_name: "Zero-Trust AI Access Gateway"
+  debug: false
+  log_level: INFO
+  
+  # Server Settings
+  workers: 4
+  
+  # Rate Limiting
+  rate_limit_requests_per_minute: 60
+  rate_limit_requests_per_hour: 1000
+  
+  # Token Budgeting
+  default_user_daily_token_limit: 100000
+  default_org_daily_token_limit: 1000000
+  
+  # Security Settings
+  pii_detection_enabled: true
+  prompt_injection_detection_enabled: true
+  max_prompt_length: 16000
+  
+  # Audit Logging
+  audit_log_retention_days: 90
+
+# Secrets (use external secrets manager in production)
+secrets:
+  # JWT/OAuth2 settings
+  secret_key: "change-me-in-production"
+  jwt_public_key: ""
+  
+  # AI Provider API Keys (use external secrets)
+  openai_api_key: ""
+  anthropic_api_key: ""
+  
+  # OAuth2 Client
+  oauth2_client_id: ""
+  oauth2_client_secret: ""
+
+# Database Configuration
+postgresql:
+  enabled: true
+  auth:
+    username: zerotrust
+    password: ""
+    database: zerotrust_ai
+  primary:
+    persistence:
+      enabled: true
+      size: 10Gi
+    resources:
+      limits:
+        memory: 1Gi
+        cpu: 1000m
+
+# Redis Configuration
+redis:
+  enabled: true
+  auth:
+    enabled: true
+    password: ""
+  master:
+    persistence:
+      enabled: true
+      size: 5Gi
+    resources:
+      limits:
+        memory: 512Mi
+        cpu: 500m
+
+# Monitoring
+monitoring:
+  enabled: true
+  serviceMonitor:
+    enabled: false
+    namespace: monitoring
+    interval: 30s
+    scrapeTimeout: 10s
+
+# Network Policies
+networkPolicy:
+  enabled: true
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: ingress-nginx
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: postgresql
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: redis
+    - to: []  # Allow external AI providers
+      ports:
+        - protocol: TCP
+          port: 443

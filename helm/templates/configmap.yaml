@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "zero-trust-ai-access.fullname" . }}-config
+  labels:
+    {{- include "zero-trust-ai-access.labels" . | nindent 4 }}
+data:
+  APP_NAME: {{ .Values.config.app_name | quote }}
+  DEBUG: {{ .Values.config.debug | quote }}
+  LOG_LEVEL: {{ .Values.config.log_level | quote }}
+  WORKERS: {{ .Values.config.workers | quote }}
+  RATE_LIMIT_REQUESTS_PER_MINUTE: {{ .Values.config.rate_limit_requests_per_minute | quote }}
+  RATE_LIMIT_REQUESTS_PER_HOUR: {{ .Values.config.rate_limit_requests_per_hour | quote }}
+  DEFAULT_USER_DAILY_TOKEN_LIMIT: {{ .Values.config.default_user_daily_token_limit | quote }}
+  DEFAULT_ORG_DAILY_TOKEN_LIMIT: {{ .Values.config.default_org_daily_token_limit | quote }}
+  PII_DETECTION_ENABLED: {{ .Values.config.pii_detection_enabled | quote }}
+  PROMPT_INJECTION_DETECTION_ENABLED: {{ .Values.config.prompt_injection_detection_enabled | quote }}
+  MAX_PROMPT_LENGTH: {{ .Values.config.max_prompt_length | quote }}
+  AUDIT_LOG_RETENTION_DAYS: {{ .Values.config.audit_log_retention_days | quote }}
+  OAUTH2_PROVIDER_URL: {{ .Values.config.oauth2_provider_url | default "https://auth.example.com" | quote }}
+  OAUTH2_AUDIENCE: {{ .Values.config.oauth2_audience | default "ai-api-gateway" | quote }}
+  JWT_ALGORITHM: {{ .Values.config.jwt_algorithm | default "RS256" | quote }}
+  JWT_ISSUER: {{ .Values.config.jwt_issuer | default "https://auth.example.com" | quote }}
+  JWT_AUDIENCE: {{ .Values.config.jwt_audience | default "ai-api-gateway" | quote }}
+  OPENAI_BASE_URL: {{ .Values.config.openai_base_url | default "https://api.openai.com/v1" | quote }}
+  ANTHROPIC_BASE_URL: {{ .Values.config.anthropic_base_url | default "https://api.anthropic.com" | quote }}
