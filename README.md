@@ -13,6 +13,7 @@
 ## 🚨 The Problem
 
 AI agents today operate with **implicit trust**:
+
 - Once authenticated, they can call any tool or API
 - No per-request authorization checks
 - No context-aware access control
@@ -22,7 +23,7 @@ AI agents today operate with **implicit trust**:
 
 Zero-Trust AI Access Layer applies **continuous verification** to every agent action:
 
-```
+```text
 Agent Request → Identity Check → Context Evaluation → Policy Decision → Allow/Deny
 ```
 
@@ -61,7 +62,7 @@ result = gate.evaluate(
 
 ## 🏗️ Architecture
 
-```
+```text
 ┌─────────────┐     ┌──────────────────┐     ┌──────────────┐
 │  AI Agent   │────▶│  Access Gate     │────▶│  LLM / Tool  │
 └─────────────┘     └──────────────────┘     └──────────────┘
@@ -116,7 +117,7 @@ export ZTAI_RISK_THRESHOLD="0.7"
 ## 📊 Use Cases
 
 | Use Case | Description |
-|----------|-------------|
+| -------- | ----------- |
 | **Agent Sandboxing** | Restrict what tools/APIs an agent can access per-session |
 | **Multi-Tenant AI** | Isolate agent access between different users/organizations |
 | **CI/CD Agents** | Prevent automated agents from accessing production resources |

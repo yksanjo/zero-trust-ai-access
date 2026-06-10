@@ -1,6 +1,7 @@
 # Screenshot Assets
 
 ## Required Screenshots
+
 1. dashboard-main.png - Access dashboard
 2. agent-inventory.png - Identity inventory
 3. auth-flow.png - Authentication flow
