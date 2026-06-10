@@ -4,7 +4,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg)](https://github.com/yksanjo/zero-trust-ai-access/pulls)
 
-**Context-aware authentication for AI agents** — a zero-trust access layer that verifies every request to LLM APIs, tool calls, and data sources.
+**Context-aware authentication for AI agents** — a zero-trust access layer
+that verifies every request to LLM APIs, tool calls, and data sources.
 
 > Never trust, always verify — even for AI agents.
 
@@ -31,10 +32,14 @@ Agent Request → Identity Check → Context Evaluation → Policy Decision → 
 
 ## ✨ Features
 
-- **🔑 Per-Request Authentication** — Every tool call and API request is independently verified
-- **🧠 Context-Aware Policies** — Access decisions based on conversation context, intent, and risk score
-- **🛡️ Prompt Injection Detection** — Identifies and blocks injection attempts before they reach the LLM
-- **📝 Audit Trail** — Complete log of every access decision for compliance and debugging
+- **🔑 Per-Request Authentication** — Every tool call and API request is
+  independently verified
+- **🧠 Context-Aware Policies** — Access decisions based on conversation
+  context, intent, and risk score
+- **🛡️ Prompt Injection Detection** — Identifies and blocks injection
+  attempts before they reach the LLM
+- **📝 Audit Trail** — Complete log of every access decision for compliance
+  and debugging
 - **⚡ Minimal Latency** — Sub-100ms decision time for most requests
 - **🔌 Framework Agnostic** — Works with any LLM, agent framework, or tool chain
 
@@ -118,9 +123,9 @@ export ZTAI_RISK_THRESHOLD="0.7"
 
 | Use Case | Description |
 | -------- | ----------- |
-| **Agent Sandboxing** | Restrict what tools/APIs an agent can access per-session |
-| **Multi-Tenant AI** | Isolate agent access between different users/organizations |
-| **CI/CD Agents** | Prevent automated agents from accessing production resources |
+| **Agent Sandboxing** | Restrict tools/APIs an agent can use per-session |
+| **Multi-Tenant AI** | Isolate agent access between users/organizations |
+| **CI/CD Agents** | Keep automated agents out of production resources |
 | **Research Agents** | Allow web access but block internal tools |
 
 ---
@@ -135,6 +140,4 @@ MIT
 
 ---
 
-<div align="center">
-  <strong>⭐ Star if you use it — it helps others find this project!</strong>
-</div>
+**⭐ Star if you use it — it helps others find this project!**

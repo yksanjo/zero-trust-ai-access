@@ -2,7 +2,8 @@
 
 ## Purpose
 
-zero-trust-ai-access evaluates risk signals, policy violations, and suspicious activity for faster incident response.
+zero-trust-ai-access evaluates risk signals, policy violations, and
+suspicious activity for faster incident response.
 
 ## Components
 
